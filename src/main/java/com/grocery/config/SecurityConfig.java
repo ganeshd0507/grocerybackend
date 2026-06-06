@@ -50,8 +50,13 @@ public class SecurityConfig {
                                 "/v3/api-docs/**",
                                 "/api/v1/v3/api-docs/**",
                                 "/v3/api-docs.yaml",
-                                "/api/v1/v3/api-docs.yaml"
+                                "/api/v1/v3/api-docs.yaml",
+                                "/products/**"
                         ).permitAll()
+//                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/products/**", "/categories/**", "/api/v1/products/**", "/api/v1/categories/**").permitAll()
+//                        .requestMatchers(org.springframework.http.HttpMethod.POST, "/products/**", "/categories/**", "/api/v1/products/**", "/api/v1/categories/**").authenticated()
+//                        .requestMatchers(org.springframework.http.HttpMethod.PUT, "/products/**", "/categories/**", "/api/v1/products/**", "/api/v1/categories/**").authenticated()
+//                        .requestMatchers(org.springframework.http.HttpMethod.DELETE, "/products/**", "/categories/**", "/api/v1/products/**", "/api/v1/categories/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
