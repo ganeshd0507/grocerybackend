@@ -37,6 +37,18 @@ public class ProductService {
                 product.setImages(new ArrayList<>());
             }
         }
+        if (product.getPrice() == null) {
+            product.setPrice(0.0);
+        }
+        if (product.getOldPrice() == null) {
+            product.setOldPrice(product.getPrice());
+        }
+        if (product.getDiscount() == null) {
+            product.setDiscount(0.0);
+        }
+        if (product.getInStock() == null) {
+            product.setInStock(true);
+        }
         product.setRating(5.0);
         product.setReviewsCount(0);
         return productRepository.save(product);
@@ -47,14 +59,30 @@ public class ProductService {
                 .map(existingProduct -> {
                     existingProduct.setName(productDetails.getName());
                     existingProduct.setCategory(productDetails.getCategory());
-                    existingProduct.setPrice(productDetails.getPrice());
-                    existingProduct.setOldPrice(productDetails.getOldPrice());
-                    existingProduct.setDiscount(productDetails.getDiscount());
+                    
+                    Double price = productDetails.getPrice() != null ? productDetails.getPrice() : 0.0;
+                    existingProduct.setPrice(price);
+                    
+                    existingProduct.setOldPrice(productDetails.getOldPrice() != null ? productDetails.getOldPrice() : price);
+                    existingProduct.setDiscount(productDetails.getDiscount() != null ? productDetails.getDiscount() : 0.0);
                     existingProduct.setWeight(productDetails.getWeight());
                     existingProduct.setImage(productDetails.getImage());
-                    existingProduct.setInStock(productDetails.isInStock());
+                    existingProduct.setInStock(productDetails.getInStock() != null ? productDetails.getInStock() : true);
                     existingProduct.setEta(productDetails.getEta());
                     existingProduct.setDescription(productDetails.getDescription());
+                    
+                    if (productDetails.getRating() != null) {
+                        existingProduct.setRating(productDetails.getRating());
+                    } else if (existingProduct.getRating() == null) {
+                        existingProduct.setRating(5.0);
+                    }
+                    
+                    if (productDetails.getReviewsCount() != null) {
+                        existingProduct.setReviewsCount(productDetails.getReviewsCount());
+                    } else if (existingProduct.getReviewsCount() == null) {
+                        existingProduct.setReviewsCount(0);
+                    }
+
                     if (productDetails.getImages() != null && !productDetails.getImages().isEmpty()) {
                         existingProduct.setImages(new ArrayList<>(productDetails.getImages()));
                     } else if (productDetails.getImage() != null) {

@@ -25,19 +25,19 @@ public class Product {
     @Column(nullable = false)
     private String category;
 
-    private double price;
+    private Double price;
 
     @Column(name = "old_price")
-    private double oldPrice;
+    private Double oldPrice;
 
-    private double discount;
+    private Double discount;
 
     private String weight;
 
-    private double rating;
+    private Double rating;
 
     @Column(name = "reviews_count")
-    private int reviewsCount;
+    private Integer reviewsCount;
 
     @Column(columnDefinition = "TEXT")
     private String image;
@@ -48,7 +48,7 @@ public class Product {
     private List<String> images;
 
     @Column(name = "in_stock")
-    private boolean inStock;
+    private Boolean inStock;
 
     private String eta;
 

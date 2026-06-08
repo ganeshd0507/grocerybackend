@@ -21,6 +21,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
+import org.springframework.http.HttpMethod;
 
 @Configuration
 @EnableWebSecurity
@@ -34,34 +35,53 @@ public class SecurityConfig {
         this.userDetailsService = userDetailsService;
     }
 
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//
+//        http
+//                .csrf(AbstractHttpConfigurer::disable)
+//                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+//                .authorizeHttpRequests(auth -> auth
+//
+//                        // Authentication APIs
+//                        .requestMatchers(
+//                                "/auth/**",
+//                                "/api/v1/auth/**"
+//                        ).permitAll()
+//
+//                        // Swagger APIs
+//                        .requestMatchers(
+//                                "/swagger-ui/**",
+//                                "/swagger-ui.html",
+//                                "/v3/api-docs/**",
+//                                "/v3/api-docs.yaml"
+//                        ).permitAll()
+//
+//                        // Product & Category APIs
+//                        .requestMatchers(
+//                                "/api/v1/products/**",
+//                                "/api/v1/categories/**"
+//                        ).permitAll()
+//
+//                        // Everything else requires authentication
+//                        .anyRequest().authenticated()
+//                )
+//                .sessionManagement(session ->
+//                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                )
+//                .authenticationProvider(authenticationProvider())
+//                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+//
+//        return http.build();
+//    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
         http
-                .csrf(AbstractHttpConfigurer::disable)
+                .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/auth/**",
-                                "/api/v1/auth/**",
-                                "/swagger-ui/**",
-                                "/api/v1/swagger-ui/**",
-                                "/swagger-ui.html",
-                                "/api/v1/swagger-ui.html",
-                                "/v3/api-docs/**",
-                                "/api/v1/v3/api-docs/**",
-                                "/v3/api-docs.yaml",
-                                "/api/v1/v3/api-docs.yaml",
-                                "/products/**"
-                        ).permitAll()
-//                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/products/**", "/categories/**", "/api/v1/products/**", "/api/v1/categories/**").permitAll()
-//                        .requestMatchers(org.springframework.http.HttpMethod.POST, "/products/**", "/categories/**", "/api/v1/products/**", "/api/v1/categories/**").authenticated()
-//                        .requestMatchers(org.springframework.http.HttpMethod.PUT, "/products/**", "/categories/**", "/api/v1/products/**", "/api/v1/categories/**").authenticated()
-//                        .requestMatchers(org.springframework.http.HttpMethod.DELETE, "/products/**", "/categories/**", "/api/v1/products/**", "/api/v1/categories/**").authenticated()
-                        .anyRequest().authenticated()
-                )
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
 
         return http.build();
     }
