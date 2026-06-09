@@ -21,6 +21,10 @@ public class JwtService {
     @Value("${jwt.secret:9a3f98276f7881c6382a9d20c5d68194e9f78328765c5d4f10928cd9f0912f2c}")
     private String secretKey;
 
+    private static final String SECRET =
+            "mySecretKeymySecretKeymySecretKeymySecretKey";
+
+
     @Value("${jwt.expiration:86400000}")
     private long jwtExpiration;
 
@@ -78,4 +82,17 @@ public class JwtService {
             return Keys.hmacShaKeyFor(secretKey.getBytes());
         }
     }
+
+    public String generateTokenGoogle(String email) {
+
+        return Jwts.builder()
+                .setSubject(email)
+                .setIssuedAt(new Date())
+                .setExpiration(
+                        new Date(System.currentTimeMillis() + 86400000))
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+
 }
