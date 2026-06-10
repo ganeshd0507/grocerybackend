@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
-
 @Service
-@RequiredArgsConstructor
 public class GoogleAuthService {
 
     @Value("${google.client.id}")
@@ -32,7 +30,7 @@ public class GoogleAuthService {
                 verifier.verify(token);
 
         if (idToken == null) {
-            throw new RuntimeException("Invalid Google Token");
+            throw new RuntimeException("Invalid token");
         }
 
         return idToken.getPayload();

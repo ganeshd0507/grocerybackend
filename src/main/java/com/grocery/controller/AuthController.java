@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -146,13 +147,17 @@ public class AuthController {
 //        return ResponseEntity.ok(response);
 //    }
 
-    @PostMapping("/google-test")
-    public ResponseEntity<?> googleTest() {
+    @PostMapping("/google")
+    public ResponseEntity<?> googleLogin(
+            @RequestBody GoogleLoginRequest request) {
 
         try {
 
-            String email = "test@gmail.com";
-            String name = "Test User";
+            GoogleIdToken.Payload payload =
+                    googleAuthService.verifyToken(request.getToken());
+
+            String email = payload.getEmail();
+            String name = (String) payload.get("name");
 
             User user = userRepository.findByEmail(email)
                     .orElseGet(() -> {
@@ -161,19 +166,24 @@ public class AuthController {
                                 .name(name)
                                 .email(email)
                                 .password("GOOGLE_USER")
-                                .phone("9999999999")
+                                .phone("")
                                 .role(Role.USER)
                                 .build();
 
                         return userRepository.save(newUser);
                     });
 
-            return ResponseEntity.ok(user);
+            String jwt = jwtService.generateTokenGoogle(email);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("token", jwt);
+            response.put("user", user);
+
+            return ResponseEntity.ok(response);
 
         } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError()
-                    .body(e.getMessage());
+            return ResponseEntity.badRequest()
+                    .body("Invalid Google Token");
         }
     }
 
