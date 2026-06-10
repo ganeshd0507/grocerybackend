@@ -8,7 +8,7 @@ public class GroceryApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(GroceryApplication.class, args);
-		System.out.println("Starting Project.... ");
+		System.out.println("Starting Project..... ");
 	}
 
 }
