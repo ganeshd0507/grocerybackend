@@ -23,8 +23,11 @@ public class Order {
     @Column(name = "order_date")
     private LocalDateTime date;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "order_items", joinColumns = @JoinColumn(name = "order_id"))
+//    @ElementCollection(fetch = FetchType.EAGER)
+//    @CollectionTable(name = "order_items", joinColumns = @JoinColumn(name = "order_id"))
+//    private List<OrderItem> items;
+
+    @Transient
     private List<OrderItem> items;
 
     private double subtotal;

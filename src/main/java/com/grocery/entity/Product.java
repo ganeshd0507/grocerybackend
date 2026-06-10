@@ -42,9 +42,12 @@ public class Product {
     @Column(columnDefinition = "TEXT")
     private String image;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "product_images", joinColumns = @JoinColumn(name = "product_id"))
-    @Column(name = "image_url", columnDefinition = "TEXT")
+//    @ElementCollection(fetch = FetchType.EAGER)
+//    @CollectionTable(name = "product_images", joinColumns = @JoinColumn(name = "product_id"))
+//    @Column(name = "image_url", columnDefinition = "TEXT")
+//    private List<String> images;
+
+    @Transient
     private List<String> images;
 
     @Column(name = "in_stock")
