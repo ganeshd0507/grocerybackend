@@ -35,58 +35,58 @@ public class SecurityConfig {
         this.userDetailsService = userDetailsService;
     }
 
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//
-//        http
-//                .csrf(AbstractHttpConfigurer::disable)
-//                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-//                .authorizeHttpRequests(auth -> auth
-//
-//                        // Authentication APIs
-//                        .requestMatchers(
-//                                "/auth/**",
-//                                "/api/v1/auth/**"
-//                        ).permitAll()
-//
-//                        // Swagger APIs
-//                        .requestMatchers(
-//                                "/swagger-ui/**",
-//                                "/swagger-ui.html",
-//                                "/v3/api-docs/**",
-//                                "/v3/api-docs.yaml"
-//                        ).permitAll()
-//
-//                        // Product & Category APIs
-//                        .requestMatchers(
-//                                "/api/v1/products/**",
-//                                "/api/v1/categories/**"
-//                        ).permitAll()
-//
-//                        // Everything else requires authentication
-//                        .anyRequest().authenticated()
-//                )
-//                .sessionManagement(session ->
-//                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                )
-//                .authenticationProvider(authenticationProvider())
-//                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-//
-//        return http.build();
-//    }
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .authorizeHttpRequests(auth ->
-                        auth.anyRequest().permitAll()
-                );
+                .authorizeHttpRequests(auth -> auth
+
+                        // Authentication APIs
+                        .requestMatchers(
+                                "/auth/**",
+                                "/api/v1/auth/**"
+                        ).permitAll()
+
+                        // Swagger APIs
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/v3/api-docs/**",
+                                "/v3/api-docs.yaml"
+                        ).permitAll()
+
+                        // Product & Category APIs
+                        .requestMatchers(
+                                "/api/v1/products/**",
+                                "/api/v1/categories/**"
+                        ).permitAll()
+
+                        // Everything else requires authentication
+                        .anyRequest().authenticated()
+                )
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
+
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//
+//        http
+//                .csrf(AbstractHttpConfigurer::disable)
+//                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+//                .authorizeHttpRequests(auth ->
+//                        auth.anyRequest().permitAll()
+//                );
+//
+//        return http.build();
+//    }
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailsService);
